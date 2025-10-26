@@ -54,6 +54,7 @@ function getEndpoint(event) {
   if (path.includes('/chat')) return 'chat';
   if (path.includes('/risk-analysis') || path.includes('/risk')) return 'risk-analysis';
   if (path.includes('/search')) return 'search';
+  if (path.includes('/places') || path.includes('/map') || path.includes('/places-search')) return 'places';
   if (path.includes('/user-context') || path.includes('/context')) return 'user-context';
   if (path.includes('/fiscal-consultation')) return 'fiscal-consultation';
   if (path.includes('/risk-assessment')) return 'risk-assessment';
@@ -117,6 +118,12 @@ exports.handler = async (event, context) => {
       case 'search': {
         console.log('[MCP] Llamando search_fiscal_documents...');
         const result = await mcpBridge.handleMcpSearch(params);
+        return createResponse(result.statusCode, result.body);
+      }
+
+      case 'places': {
+        console.log('[MCP] Llamando search_places (places)...');
+        const result = await mcpBridge.handleMcpSearchPlaces(params);
         return createResponse(result.statusCode, result.body);
       }
       

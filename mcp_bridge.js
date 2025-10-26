@@ -443,6 +443,55 @@ async function handleMcpSearch(params) {
 }
 
 /**
+ * Handler para search_places vía MCP (Google Places / deep links)
+ * Espera params: { query, lat, lng, limit }
+ */
+async function handleMcpSearchPlaces(params) {
+  const { query, lat, lng, limit } = params;
+
+  if (!query) {
+    return {
+      statusCode: 400,
+      body: {
+        error: 'Falta el parámetro "query"',
+        required: ['query'],
+        optional: ['lat', 'lng', 'limit']
+      }
+    };
+  }
+
+  try {
+    // Llamar la herramienta MCP 'search_places' con la estructura esperada
+    const result = await callMcpTool('search_places', {
+      request: {
+        query,
+        lat: lat !== undefined ? Number(lat) : undefined,
+        lng: lng !== undefined ? Number(lng) : undefined,
+        limit: limit || 5
+      }
+    });
+
+    return {
+      statusCode: 200,
+      body: {
+        success: true,
+        data: result,
+        source: 'mcp_server',
+        timestamp: new Date().toISOString()
+      }
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: {
+        error: error.message,
+        timestamp: new Date().toISOString()
+      }
+    };
+  }
+}
+
+/**
  * Handler para get_user_fiscal_context vía MCP
  */
 async function handleMcpUserContext(params) {
