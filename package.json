@@ -1,0 +1,20 @@
+{
+  "name": "fiscai-lambda-functions",
+  "version": "1.0.0",
+  "description": "FiscAI Lambda functions para consultas, seeding y recomendaciones",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "node index.js",
+    "build": "npm install --production && zip -r function.zip . -x '*.git*' 'README.md' '*.DS_Store' '.env' 'test/*'",
+    "deploy": "npm run build && echo 'function.zip creado. Súbelo a AWS Lambda con handler: index.handler y runtime: Node.js 18.x'"
+  },
+  "keywords": ["lambda", "fiscai", "gemini", "supabase"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5"
+  }
+}
